@@ -52,6 +52,196 @@
             padding: 20px;
         }
 
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+        }
+
+        /* LEGO Theme Styles */
+        body.lego-theme {
+            background: linear-gradient(135deg, #4dabf7 0%, #74c0fc 50%, #a5d8ff 100%);
+        }
+
+        body.lego-theme::before {
+            background-image: none;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 2px, transparent 2px);
+            background-size: 20px 20px;
+            animation: none;
+        }
+
+        body.lego-theme h1 {
+            background: linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #0000ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: legoShift 5s ease infinite;
+            text-shadow: none;
+            filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes legoShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        body.lego-theme .subtitle {
+            color: #1971c2;
+            text-shadow: none;
+            filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.2));
+        }
+
+        body.lego-theme .theme-toggle {
+            border-color: #ff0000;
+            color: #ff0000;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        body.lego-theme .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .theme-toggle:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* LEGO Brick Pads */
+        body.lego-theme .pad {
+            border: none;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.1s ease;
+        }
+
+        body.lego-theme .pad::before {
+            display: none;
+        }
+
+        body.lego-theme .pad::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(255, 255, 255, 0.5) 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                transparent 100%);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        body.lego-theme .pad:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .pad:active,
+        body.lego-theme .pad.active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* LEGO brick colors */
+        body.lego-theme .pad-kick {
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            border: none;
+            color: white;
+        }
+
+        body.lego-theme .pad-snare {
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            border: none;
+            color: white;
+        }
+
+        body.lego-theme .pad-hihat {
+            background: linear-gradient(135deg, #ffdd00 0%, #ccaa00 100%);
+            border: none;
+            color: #333;
+        }
+
+        body.lego-theme .pad-clap {
+            background: linear-gradient(135deg, #00cc00 0%, #009900 100%);
+            border: none;
+            color: white;
+        }
+
+        body.lego-theme .pad-tom {
+            background: linear-gradient(135deg, #ff6600 0%, #cc5200 100%);
+            border: none;
+            color: white;
+        }
+
+        body.lego-theme .pad-rim {
+            background: linear-gradient(135deg, #9900cc 0%, #660099 100%);
+            border: none;
+            color: white;
+        }
+
+        body.lego-theme .pad-crash {
+            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+            border: none;
+            color: #333;
+        }
+
+        body.lego-theme .pad-synth {
+            background: linear-gradient(135deg, #ff0099 0%, #cc0066 100%);
+            border: none;
+            color: white;
+        }
+
+        body.lego-theme .hero-button {
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+            border: none;
+        }
+
+        body.lego-theme .hero-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .hero-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .instructions {
+            color: #1971c2;
+        }
+
+        body.lego-theme .instructions span {
+            color: #ff0000;
+            font-weight: bold;
+        }
+
         h1 {
             font-size: 3rem;
             margin-bottom: 10px;
@@ -264,6 +454,8 @@
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="themeToggle">🧱 LEGO Mode</button>
+    
     <div class="container">
         <h1>🎵 Neon Beat Maker</h1>
         <p class="subtitle">Cyberpunk Edition</p>
@@ -314,6 +506,29 @@
     </div>
 
     <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('beatMakerTheme');
+        if (savedTheme === 'lego') {
+            body.classList.add('lego-theme');
+            themeToggle.textContent = '🌃 Neon Mode';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('lego-theme');
+            
+            if (body.classList.contains('lego-theme')) {
+                themeToggle.textContent = '🌃 Neon Mode';
+                localStorage.setItem('beatMakerTheme', 'lego');
+            } else {
+                themeToggle.textContent = '🧱 LEGO Mode';
+                localStorage.setItem('beatMakerTheme', 'neon');
+            }
+        });
+        
         // Initialize Audio Context
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext();

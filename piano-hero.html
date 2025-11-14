@@ -48,6 +48,211 @@
             padding: 20px;
         }
 
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+        }
+
+        /* LEGO Theme Styles */
+        body.lego-theme {
+            background: linear-gradient(135deg, #4dabf7 0%, #74c0fc 50%, #a5d8ff 100%);
+        }
+
+        body.lego-theme::before {
+            background-image: none;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 2px, transparent 2px);
+            background-size: 20px 20px;
+            animation: none;
+        }
+
+        body.lego-theme h1 {
+            background: linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #0000ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: legoShift 5s ease infinite;
+            text-shadow: none;
+            filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes legoShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        body.lego-theme .theme-toggle {
+            border-color: #ff0000;
+            color: #ff0000;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        body.lego-theme .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .theme-toggle:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        body.lego-theme .score-label {
+            color: #1971c2;
+        }
+
+        body.lego-theme .score-value {
+            filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.2));
+        }
+
+        body.lego-theme .lane {
+            border-left-color: rgba(0, 0, 0, 0.2);
+            border-right-color: rgba(0, 0, 0, 0.2);
+        }
+
+        body.lego-theme .hit-zone {
+            border-width: 4px;
+            border-style: solid;
+            opacity: 0.8;
+        }
+
+        /* LEGO brick notes */
+        body.lego-theme .note {
+            border-radius: 4px;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        body.lego-theme .note::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+        }
+
+        body.lego-theme .note::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(255, 255, 255, 0.6) 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                transparent 100%);
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        body.lego-theme .note-a { 
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%); 
+            box-shadow: 0 4px 0 #990000;
+        }
+        body.lego-theme .note-s { 
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%); 
+            box-shadow: 0 4px 0 #003366;
+        }
+        body.lego-theme .note-d { 
+            background: linear-gradient(135deg, #ffdd00 0%, #ccaa00 100%); 
+            box-shadow: 0 4px 0 #998800;
+        }
+        body.lego-theme .note-f { 
+            background: linear-gradient(135deg, #00cc00 0%, #009900 100%); 
+            box-shadow: 0 4px 0 #006600;
+        }
+        body.lego-theme .note-g { 
+            background: linear-gradient(135deg, #ff6600 0%, #cc5200 100%); 
+            box-shadow: 0 4px 0 #993d00;
+        }
+        body.lego-theme .note-h { 
+            background: linear-gradient(135deg, #9900cc 0%, #660099 100%); 
+            box-shadow: 0 4px 0 #4d0066;
+        }
+        body.lego-theme .note-j { 
+            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%); 
+            box-shadow: 0 4px 0 #999999;
+        }
+        body.lego-theme .note-k { 
+            background: linear-gradient(135deg, #ff0099 0%, #cc0066 100%); 
+            box-shadow: 0 4px 0 #99004d;
+        }
+
+        body.lego-theme .btn {
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.lego-theme .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .btn-start {
+            border-color: #00cc00;
+            color: #00cc00;
+        }
+
+        body.lego-theme .btn-back {
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        body.lego-theme .game-over {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #ff0000;
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .game-over h2 {
+            color: #ff0000;
+            text-shadow: none;
+            filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.2));
+        }
+
+        body.lego-theme .game-over .final-score {
+            color: #0066cc;
+            text-shadow: none;
+            filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.2));
+        }
+
+        body.lego-theme .game-over .stats {
+            color: #1971c2;
+        }
+
         h1 {
             font-size: 2.5rem;
             text-transform: uppercase;
@@ -301,6 +506,8 @@
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="themeToggle">🧱 LEGO Mode</button>
+    
     <div class="header">
         <h1>🎸 Piano Hero</h1>
     </div>
@@ -375,6 +582,29 @@
     </div>
 
     <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const bodyElement = document.body;
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('beatMakerTheme');
+        if (savedTheme === 'lego') {
+            bodyElement.classList.add('lego-theme');
+            themeToggle.textContent = '🌃 Neon Mode';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            bodyElement.classList.toggle('lego-theme');
+            
+            if (bodyElement.classList.contains('lego-theme')) {
+                themeToggle.textContent = '🌃 Neon Mode';
+                localStorage.setItem('beatMakerTheme', 'lego');
+            } else {
+                themeToggle.textContent = '🧱 LEGO Mode';
+                localStorage.setItem('beatMakerTheme', 'neon');
+            }
+        });
+        
         // Initialize Audio Context
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext();
