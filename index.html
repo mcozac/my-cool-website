@@ -439,6 +439,167 @@
             transform: scale(0.95);
         }
 
+        /* Recording Studio Styles */
+        .studio-panel {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            z-index: 50;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .studio-btn {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .studio-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .record-btn {
+            border-color: #ff0000;
+            color: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .record-btn:hover:not(:disabled) {
+            background: rgba(255, 0, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+        }
+
+        .record-btn.recording {
+            animation: recordPulse 1s ease-in-out infinite;
+            background: rgba(255, 0, 0, 0.3);
+        }
+
+        @keyframes recordPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(255, 0, 0, 1); }
+        }
+
+        .play-btn {
+            border-color: #00ff00;
+            color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .play-btn:hover:not(:disabled) {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        .download-btn {
+            border-color: #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .download-btn:hover:not(:disabled) {
+            background: rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+        }
+
+        .clear-btn {
+            border-color: #ff9900;
+            color: #ff9900;
+            box-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
+        }
+
+        .clear-btn:hover:not(:disabled) {
+            background: rgba(255, 153, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 153, 0, 0.6);
+        }
+
+        .timer-display {
+            font-size: 1.2rem;
+            color: #00ffff;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .recording-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ff0000;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .rec-dot {
+            width: 12px;
+            height: 12px;
+            background: #ff0000;
+            border-radius: 50%;
+            animation: recDotPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes recDotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        /* LEGO Theme Studio Panel */
+        body.lego-theme .studio-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #ff0000;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .studio-btn {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        body.lego-theme .studio-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        body.lego-theme .studio-btn:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        body.lego-theme .timer-display {
+            color: #0066cc;
+            text-shadow: none;
+            filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.2));
+        }
+
+        body.lego-theme .recording-indicator {
+            filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.2));
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -450,11 +611,46 @@
             .pad {
                 font-size: 0.8rem;
             }
+            .studio-panel {
+                top: 10px;
+                padding: 15px;
+                gap: 10px;
+                width: 95%;
+            }
+            .studio-btn {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+            .timer-display {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <button class="theme-toggle" id="themeToggle">🧱 LEGO Mode</button>
+    
+    <!-- Recording Studio Panel -->
+    <div class="studio-panel">
+        <button class="studio-btn record-btn" id="recordBtn">
+            <span id="recordIcon">🔴</span>
+            <span id="recordText">Record</span>
+        </button>
+        <button class="studio-btn play-btn" id="playBtn" disabled>
+            ▶️ Play
+        </button>
+        <button class="studio-btn download-btn" id="downloadBtn" disabled>
+            💾 Download
+        </button>
+        <button class="studio-btn clear-btn" id="clearBtn" disabled>
+            🗑️ Clear
+        </button>
+        <div class="timer-display" id="timer">0:00</div>
+        <div class="recording-indicator" id="recIndicator" style="display: none;">
+            <div class="rec-dot"></div>
+            <span>REC</span>
+        </div>
+    </div>
     
     <div class="container">
         <h1>🎵 Neon Beat Maker</h1>
@@ -532,6 +728,348 @@
         // Initialize Audio Context
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext();
+
+        // Recording Studio Variables
+        let isRecording = false;
+        let recordedNotes = [];
+        let recordingStartTime = 0;
+        let recordingTimer = null;
+        let recordingDuration = 0;
+
+        // UI Elements
+        const recordBtn = document.getElementById('recordBtn');
+        const playBtn = document.getElementById('playBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const timerDisplay = document.getElementById('timer');
+        const recIndicator = document.getElementById('recIndicator');
+        const recordIcon = document.getElementById('recordIcon');
+        const recordText = document.getElementById('recordText');
+
+        // Format time display
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Update timer display
+        function updateTimer() {
+            if (isRecording) {
+                recordingDuration = (Date.now() - recordingStartTime) / 1000;
+                timerDisplay.textContent = formatTime(recordingDuration);
+            }
+        }
+
+        // Start Recording
+        function startRecording() {
+            isRecording = true;
+            recordedNotes = [];
+            recordingStartTime = Date.now();
+            recordingDuration = 0;
+            
+            recordBtn.classList.add('recording');
+            recordIcon.textContent = '⏹️';
+            recordText.textContent = 'Stop';
+            recIndicator.style.display = 'flex';
+            playBtn.disabled = true;
+            downloadBtn.disabled = true;
+            clearBtn.disabled = true;
+            
+            recordingTimer = setInterval(updateTimer, 100);
+        }
+
+        // Stop Recording
+        function stopRecording() {
+            isRecording = false;
+            clearInterval(recordingTimer);
+            
+            recordBtn.classList.remove('recording');
+            recordIcon.textContent = '🔴';
+            recordText.textContent = 'Record';
+            recIndicator.style.display = 'none';
+            
+            if (recordedNotes.length > 0) {
+                playBtn.disabled = false;
+                downloadBtn.disabled = false;
+                clearBtn.disabled = false;
+            }
+        }
+
+        // Record Button
+        recordBtn.addEventListener('click', () => {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
+
+        // Play Recording
+        playBtn.addEventListener('click', async () => {
+            if (recordedNotes.length === 0) return;
+            
+            playBtn.disabled = true;
+            recordBtn.disabled = true;
+            downloadBtn.disabled = true;
+            clearBtn.disabled = true;
+            
+            const startTime = audioContext.currentTime;
+            
+            for (const note of recordedNotes) {
+                const noteTime = startTime + note.time;
+                sounds[note.sound](noteTime);
+                
+                // Visual feedback
+                setTimeout(() => {
+                    const pad = document.querySelector(`[data-sound="${note.sound}"]`);
+                    if (pad) {
+                        pad.classList.add('active');
+                        setTimeout(() => pad.classList.remove('active'), 200);
+                    }
+                }, note.time * 1000);
+            }
+            
+            // Re-enable buttons after playback
+            setTimeout(() => {
+                playBtn.disabled = false;
+                recordBtn.disabled = false;
+                downloadBtn.disabled = false;
+                clearBtn.disabled = false;
+            }, recordingDuration * 1000 + 500);
+        });
+
+        // Download Recording as WAV
+        downloadBtn.addEventListener('click', async () => {
+            if (recordedNotes.length === 0) return;
+            
+            downloadBtn.textContent = '⏳ Creating...';
+            downloadBtn.disabled = true;
+            
+            // Create offline audio context for rendering
+            const offlineContext = new OfflineAudioContext(
+                2, // stereo
+                Math.ceil((recordingDuration + 1) * 44100), // sample rate * duration
+                44100 // sample rate
+            );
+            
+            // Recreate sounds in offline context
+            const offlineSounds = {
+                kick: (time) => {
+                    const osc = offlineContext.createOscillator();
+                    const gain = offlineContext.createGain();
+                    osc.frequency.setValueAtTime(150, time);
+                    osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
+                    gain.gain.setValueAtTime(1, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+                    osc.connect(gain);
+                    gain.connect(offlineContext.destination);
+                    osc.start(time);
+                    osc.stop(time + 0.5);
+                },
+                snare: (time) => {
+                    const noise = offlineContext.createBufferSource();
+                    const buffer = offlineContext.createBuffer(1, offlineContext.sampleRate * 0.2, offlineContext.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < buffer.length; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    noise.buffer = buffer;
+                    const noiseFilter = offlineContext.createBiquadFilter();
+                    noiseFilter.type = 'highpass';
+                    noiseFilter.frequency.value = 1000;
+                    const noiseGain = offlineContext.createGain();
+                    noiseGain.gain.setValueAtTime(1, time);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+                    noise.connect(noiseFilter);
+                    noiseFilter.connect(noiseGain);
+                    noiseGain.connect(offlineContext.destination);
+                    noise.start(time);
+                },
+                hihat: (time) => {
+                    const noise = offlineContext.createBufferSource();
+                    const buffer = offlineContext.createBuffer(1, offlineContext.sampleRate * 0.05, offlineContext.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < buffer.length; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    noise.buffer = buffer;
+                    const filter = offlineContext.createBiquadFilter();
+                    filter.type = 'highpass';
+                    filter.frequency.value = 7000;
+                    const gain = offlineContext.createGain();
+                    gain.gain.setValueAtTime(0.3, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(offlineContext.destination);
+                    noise.start(time);
+                },
+                clap: (time) => {
+                    const noise = offlineContext.createBufferSource();
+                    const buffer = offlineContext.createBuffer(1, offlineContext.sampleRate * 0.15, offlineContext.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < buffer.length; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    noise.buffer = buffer;
+                    const filter = offlineContext.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 2000;
+                    const gain = offlineContext.createGain();
+                    gain.gain.setValueAtTime(0.5, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.15);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(offlineContext.destination);
+                    noise.start(time);
+                },
+                tom: (time) => {
+                    const osc = offlineContext.createOscillator();
+                    const gain = offlineContext.createGain();
+                    osc.frequency.setValueAtTime(220, time);
+                    osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.4);
+                    gain.gain.setValueAtTime(0.7, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.4);
+                    osc.connect(gain);
+                    gain.connect(offlineContext.destination);
+                    osc.start(time);
+                    osc.stop(time + 0.4);
+                },
+                rim: (time) => {
+                    const osc = offlineContext.createOscillator();
+                    osc.type = 'square';
+                    const gain = offlineContext.createGain();
+                    osc.frequency.setValueAtTime(800, time);
+                    gain.gain.setValueAtTime(0.3, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+                    osc.connect(gain);
+                    gain.connect(offlineContext.destination);
+                    osc.start(time);
+                    osc.stop(time + 0.05);
+                },
+                crash: (time) => {
+                    const noise = offlineContext.createBufferSource();
+                    const buffer = offlineContext.createBuffer(1, offlineContext.sampleRate * 1, offlineContext.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < buffer.length; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    noise.buffer = buffer;
+                    const filter = offlineContext.createBiquadFilter();
+                    filter.type = 'highpass';
+                    filter.frequency.value = 3000;
+                    const gain = offlineContext.createGain();
+                    gain.gain.setValueAtTime(0.5, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 1);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(offlineContext.destination);
+                    noise.start(time);
+                },
+                synth: (time) => {
+                    const osc = offlineContext.createOscillator();
+                    osc.type = 'sawtooth';
+                    const gain = offlineContext.createGain();
+                    osc.frequency.setValueAtTime(440, time);
+                    osc.frequency.exponentialRampToValueAtTime(220, time + 0.3);
+                    gain.gain.setValueAtTime(0.3, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.3);
+                    osc.connect(gain);
+                    gain.connect(offlineContext.destination);
+                    osc.start(time);
+                    osc.stop(time + 0.3);
+                }
+            };
+            
+            // Schedule all notes
+            for (const note of recordedNotes) {
+                offlineSounds[note.sound](note.time);
+            }
+            
+            // Render audio
+            const renderedBuffer = await offlineContext.startRendering();
+            
+            // Convert to WAV
+            const wav = audioBufferToWav(renderedBuffer);
+            const blob = new Blob([wav], { type: 'audio/wav' });
+            const url = URL.createObjectURL(blob);
+            
+            // Download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `beat-maker-${Date.now()}.wav`;
+            a.click();
+            
+            downloadBtn.textContent = '💾 Download';
+            downloadBtn.disabled = false;
+        });
+
+        // Clear Recording
+        clearBtn.addEventListener('click', () => {
+            recordedNotes = [];
+            recordingDuration = 0;
+            timerDisplay.textContent = '0:00';
+            playBtn.disabled = true;
+            downloadBtn.disabled = true;
+            clearBtn.disabled = true;
+        });
+
+        // Convert AudioBuffer to WAV
+        function audioBufferToWav(buffer) {
+            const length = buffer.length * buffer.numberOfChannels * 2 + 44;
+            const arrayBuffer = new ArrayBuffer(length);
+            const view = new DataView(arrayBuffer);
+            const channels = [];
+            let offset = 0;
+            let pos = 0;
+
+            // Write WAV header
+            setUint32(0x46464952); // "RIFF"
+            setUint32(length - 8); // file length - 8
+            setUint32(0x45564157); // "WAVE"
+            setUint32(0x20746d66); // "fmt " chunk
+            setUint32(16); // length = 16
+            setUint16(1); // PCM (uncompressed)
+            setUint16(buffer.numberOfChannels);
+            setUint32(buffer.sampleRate);
+            setUint32(buffer.sampleRate * 2 * buffer.numberOfChannels); // avg. bytes/sec
+            setUint16(buffer.numberOfChannels * 2); // block-align
+            setUint16(16); // 16-bit
+            setUint32(0x61746164); // "data" - chunk
+            setUint32(length - pos - 4); // chunk length
+
+            // Write interleaved data
+            for (let i = 0; i < buffer.numberOfChannels; i++) {
+                channels.push(buffer.getChannelData(i));
+            }
+
+            while (pos < length) {
+                for (let i = 0; i < buffer.numberOfChannels; i++) {
+                    let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+                    sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                    view.setInt16(pos, sample, true);
+                    pos += 2;
+                }
+                offset++;
+            }
+
+            return arrayBuffer;
+
+            function setUint16(data) {
+                view.setUint16(pos, data, true);
+                pos += 2;
+            }
+
+            function setUint32(data) {
+                view.setUint32(pos, data, true);
+                pos += 4;
+            }
+        }
 
         // Sound synthesis functions
         const sounds = {
@@ -710,6 +1248,15 @@
             
             const time = audioContext.currentTime;
             sounds[soundName](time);
+            
+            // Record note if recording
+            if (isRecording) {
+                const noteTime = (Date.now() - recordingStartTime) / 1000;
+                recordedNotes.push({
+                    sound: soundName,
+                    time: noteTime
+                });
+            }
             
             // Visual feedback
             if (padElement) {
