@@ -3,10 +3,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Cool Website</title>
+    <title>🎵 Neon Beat Maker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a0a2e 50%, #16001e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            text-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #00ffff;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .pad-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .pad {
+            aspect-ratio: 1;
+            border: 2px solid;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .pad::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .pad:hover {
+            transform: scale(1.05);
+        }
+
+        .pad:active {
+            transform: scale(0.95);
+        }
+
+        .pad.active::before {
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+        }
+
+        .key-label {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* Individual pad colors */
+        .pad-kick {
+            background: rgba(255, 0, 127, 0.1);
+            border-color: #ff007f;
+            color: #ff007f;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+        }
+        .pad-kick::before { background: #ff007f; }
+        .pad-kick.active { box-shadow: 0 0 40px rgba(255, 0, 127, 0.8); }
+
+        .pad-snare {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        .pad-snare::before { background: #00ffff; }
+        .pad-snare.active { box-shadow: 0 0 40px rgba(0, 255, 255, 0.8); }
+
+        .pad-hihat {
+            background: rgba(255, 255, 0, 0.1);
+            border-color: #ffff00;
+            color: #ffff00;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+        }
+        .pad-hihat::before { background: #ffff00; }
+        .pad-hihat.active { box-shadow: 0 0 40px rgba(255, 255, 0, 0.8); }
+
+        .pad-clap {
+            background: rgba(255, 0, 255, 0.1);
+            border-color: #ff00ff;
+            color: #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+        .pad-clap::before { background: #ff00ff; }
+        .pad-clap.active { box-shadow: 0 0 40px rgba(255, 0, 255, 0.8); }
+
+        .pad-tom {
+            background: rgba(255, 127, 0, 0.1);
+            border-color: #ff7f00;
+            color: #ff7f00;
+            box-shadow: 0 0 20px rgba(255, 127, 0, 0.3);
+        }
+        .pad-tom::before { background: #ff7f00; }
+        .pad-tom.active { box-shadow: 0 0 40px rgba(255, 127, 0, 0.8); }
+
+        .pad-rim {
+            background: rgba(0, 255, 127, 0.1);
+            border-color: #00ff7f;
+            color: #00ff7f;
+            box-shadow: 0 0 20px rgba(0, 255, 127, 0.3);
+        }
+        .pad-rim::before { background: #00ff7f; }
+        .pad-rim.active { box-shadow: 0 0 40px rgba(0, 255, 127, 0.8); }
+
+        .pad-crash {
+            background: rgba(127, 0, 255, 0.1);
+            border-color: #7f00ff;
+            color: #7f00ff;
+            box-shadow: 0 0 20px rgba(127, 0, 255, 0.3);
+        }
+        .pad-crash::before { background: #7f00ff; }
+        .pad-crash.active { box-shadow: 0 0 40px rgba(127, 0, 255, 0.8); }
+
+        .pad-synth {
+            background: rgba(0, 127, 255, 0.1);
+            border-color: #007fff;
+            color: #007fff;
+            box-shadow: 0 0 20px rgba(0, 127, 255, 0.3);
+        }
+        .pad-synth::before { background: #007fff; }
+        .pad-synth.active { box-shadow: 0 0 40px rgba(0, 127, 255, 0.8); }
+
+        .instructions {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        .instructions span {
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .pad-grid {
+                gap: 15px;
+                padding: 0 10px;
+            }
+            .pad {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Cool Website!</h1>
-    <p>A cool website, yo</p>
+    <div class="container">
+        <h1>🎵 Neon Beat Maker</h1>
+        <p class="subtitle">Cyberpunk Edition</p>
+        
+        <div class="pad-grid">
+            <div class="pad pad-kick" data-key="a" data-sound="kick">
+                <span>KICK</span>
+                <span class="key-label">Press A</span>
+            </div>
+            <div class="pad pad-snare" data-key="s" data-sound="snare">
+                <span>SNARE</span>
+                <span class="key-label">Press S</span>
+            </div>
+            <div class="pad pad-hihat" data-key="d" data-sound="hihat">
+                <span>HI-HAT</span>
+                <span class="key-label">Press D</span>
+            </div>
+            <div class="pad pad-clap" data-key="f" data-sound="clap">
+                <span>CLAP</span>
+                <span class="key-label">Press F</span>
+            </div>
+            <div class="pad pad-tom" data-key="g" data-sound="tom">
+                <span>TOM</span>
+                <span class="key-label">Press G</span>
+            </div>
+            <div class="pad pad-rim" data-key="h" data-sound="rim">
+                <span>RIM</span>
+                <span class="key-label">Press H</span>
+            </div>
+            <div class="pad pad-crash" data-key="j" data-sound="crash">
+                <span>CRASH</span>
+                <span class="key-label">Press J</span>
+            </div>
+            <div class="pad pad-synth" data-key="k" data-sound="synth">
+                <span>SYNTH</span>
+                <span class="key-label">Press K</span>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <span>Click</span> the pads or use your <span>keyboard</span> to make beats!<br>
+            Experiment with different combinations and rhythms 🎶
+        </div>
+    </div>
+
+    <script>
+        // Initialize Audio Context
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext();
+
+        // Sound synthesis functions
+        const sounds = {
+            kick: (time) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.frequency.setValueAtTime(150, time);
+                osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
+                
+                gain.gain.setValueAtTime(1, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+                
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.start(time);
+                osc.stop(time + 0.5);
+            },
+            
+            snare: (time) => {
+                const noise = audioContext.createBufferSource();
+                const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.2, audioContext.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < buffer.length; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                noise.buffer = buffer;
+                
+                const noiseFilter = audioContext.createBiquadFilter();
+                noiseFilter.type = 'highpass';
+                noiseFilter.frequency.value = 1000;
+                
+                const noiseGain = audioContext.createGain();
+                noiseGain.gain.setValueAtTime(1, time);
+                noiseGain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+                
+                noise.connect(noiseFilter);
+                noiseFilter.connect(noiseGain);
+                noiseGain.connect(audioContext.destination);
+                
+                noise.start(time);
+            },
+            
+            hihat: (time) => {
+                const noise = audioContext.createBufferSource();
+                const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.05, audioContext.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < buffer.length; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                noise.buffer = buffer;
+                
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.value = 7000;
+                
+                const gain = audioContext.createGain();
+                gain.gain.setValueAtTime(0.3, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+                
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                noise.start(time);
+            },
+            
+            clap: (time) => {
+                const noise = audioContext.createBufferSource();
+                const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.15, audioContext.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < buffer.length; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                noise.buffer = buffer;
+                
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 2000;
+                
+                const gain = audioContext.createGain();
+                gain.gain.setValueAtTime(0.5, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + 0.15);
+                
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                noise.start(time);
+            },
+            
+            tom: (time) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.frequency.setValueAtTime(220, time);
+                osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.4);
+                
+                gain.gain.setValueAtTime(0.7, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + 0.4);
+                
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.start(time);
+                osc.stop(time + 0.4);
+            },
+            
+            rim: (time) => {
+                const osc = audioContext.createOscillator();
+                osc.type = 'square';
+                const gain = audioContext.createGain();
+                
+                osc.frequency.setValueAtTime(800, time);
+                
+                gain.gain.setValueAtTime(0.3, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+                
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.start(time);
+                osc.stop(time + 0.05);
+            },
+            
+            crash: (time) => {
+                const noise = audioContext.createBufferSource();
+                const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 1, audioContext.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < buffer.length; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                noise.buffer = buffer;
+                
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.value = 3000;
+                
+                const gain = audioContext.createGain();
+                gain.gain.setValueAtTime(0.5, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + 1);
+                
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                noise.start(time);
+            },
+            
+            synth: (time) => {
+                const osc = audioContext.createOscillator();
+                osc.type = 'sawtooth';
+                const gain = audioContext.createGain();
+                
+                osc.frequency.setValueAtTime(440, time);
+                osc.frequency.exponentialRampToValueAtTime(220, time + 0.3);
+                
+                gain.gain.setValueAtTime(0.3, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + 0.3);
+                
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.start(time);
+                osc.stop(time + 0.3);
+            }
+        };
+
+        // Play sound function
+        function playSound(soundName, padElement) {
+            // Resume audio context if suspended (browser autoplay policy)
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            const time = audioContext.currentTime;
+            sounds[soundName](time);
+            
+            // Visual feedback
+            if (padElement) {
+                padElement.classList.add('active');
+                setTimeout(() => {
+                    padElement.classList.remove('active');
+                }, 200);
+            }
+        }
+
+        // Click event listeners
+        document.querySelectorAll('.pad').forEach(pad => {
+            pad.addEventListener('click', () => {
+                const sound = pad.dataset.sound;
+                playSound(sound, pad);
+            });
+        });
+
+        // Keyboard event listeners
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            const pad = document.querySelector(`[data-key="${key}"]`);
+            
+            if (pad && !e.repeat) {
+                const sound = pad.dataset.sound;
+                playSound(sound, pad);
+            }
+        });
+
+        // Prevent key repeat visual glitch
+        document.addEventListener('keyup', (e) => {
+            const key = e.key.toLowerCase();
+            const pad = document.querySelector(`[data-key="${key}"]`);
+            
+            if (pad) {
+                pad.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
