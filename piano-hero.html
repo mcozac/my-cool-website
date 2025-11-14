@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Piano Hero - Neon Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a0a2e 50%, #16001e 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .score-value.score { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+        .score-value.combo { color: #ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 0.5); }
+        .score-value.multiplier { color: #ffff00; text-shadow: 0 0 10px rgba(255, 255, 0, 0.5); }
+
+        .game-container {
+            position: relative;
+            max-width: 800px;
+            height: 70vh;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        .lane-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            height: 100%;
+            position: relative;
+        }
+
+        .lane {
+            width: 80px;
+            height: 100%;
+            position: relative;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lane-label {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+
+        .hit-zone {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            height: 80px;
+            border: 3px solid;
+            border-radius: 10px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .lane:nth-child(1) .hit-zone { border-color: #ff007f; box-shadow: 0 0 20px rgba(255, 0, 127, 0.3); }
+        .lane:nth-child(2) .hit-zone { border-color: #00ffff; box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); }
+        .lane:nth-child(3) .hit-zone { border-color: #ffff00; box-shadow: 0 0 20px rgba(255, 255, 0, 0.3); }
+        .lane:nth-child(4) .hit-zone { border-color: #ff00ff; box-shadow: 0 0 20px rgba(255, 0, 255, 0.3); }
+        .lane:nth-child(5) .hit-zone { border-color: #ff7f00; box-shadow: 0 0 20px rgba(255, 127, 0, 0.3); }
+        .lane:nth-child(6) .hit-zone { border-color: #00ff7f; box-shadow: 0 0 20px rgba(0, 255, 127, 0.3); }
+        .lane:nth-child(7) .hit-zone { border-color: #7f00ff; box-shadow: 0 0 20px rgba(127, 0, 255, 0.3); }
+        .lane:nth-child(8) .hit-zone { border-color: #007fff; box-shadow: 0 0 20px rgba(0, 127, 255, 0.3); }
+
+        .note {
+            position: absolute;
+            width: 70px;
+            height: 30px;
+            left: 5px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 0 20px;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            from { top: -50px; }
+            to { top: 100%; }
+        }
+
+        .note-a { background: #ff007f; color: white; box-shadow: 0 0 20px rgba(255, 0, 127, 0.8); }
+        .note-s { background: #00ffff; color: black; box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
+        .note-d { background: #ffff00; color: black; box-shadow: 0 0 20px rgba(255, 255, 0, 0.8); }
+        .note-f { background: #ff00ff; color: white; box-shadow: 0 0 20px rgba(255, 0, 255, 0.8); }
+        .note-g { background: #ff7f00; color: white; box-shadow: 0 0 20px rgba(255, 127, 0, 0.8); }
+        .note-h { background: #00ff7f; color: black; box-shadow: 0 0 20px rgba(0, 255, 127, 0.8); }
+        .note-j { background: #7f00ff; color: white; box-shadow: 0 0 20px rgba(127, 0, 255, 0.8); }
+        .note-k { background: #007fff; color: white; box-shadow: 0 0 20px rgba(0, 127, 255, 0.8); }
+
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            pointer-events: none;
+            animation: feedbackPop 0.5s ease-out;
+            z-index: 100;
+        }
+
+        @keyframes feedbackPop {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        .feedback.perfect { color: #00ffff; text-shadow: 0 0 30px rgba(0, 255, 255, 1); }
+        .feedback.good { color: #ffff00; text-shadow: 0 0 30px rgba(255, 255, 0, 1); }
+        .feedback.miss { color: #ff0000; text-shadow: 0 0 30px rgba(255, 0, 0, 1); }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-start {
+            border-color: #00ff00;
+            color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .btn-start:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        .btn-back {
+            border-color: #ff00ff;
+            color: #ff00ff;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 0, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+        }
+
+        .game-over {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border: 3px solid #00ffff;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+        }
+
+        .game-over h2 {
+            font-size: 2.5rem;
+            color: #00ffff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        }
+
+        .game-over .final-score {
+            font-size: 3rem;
+            color: #ff00ff;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+        }
+
+        .game-over .stats {
+            margin: 20px 0;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .lane {
+                width: 60px;
+            }
+            .note {
+                width: 50px;
+                font-size: 0.7rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .score-board {
+                gap: 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎸 Piano Hero</h1>
+    </div>
+
+    <div class="score-board">
+        <div class="score-item">
+            <div class="score-label">Score</div>
+            <div class="score-value score" id="score">0</div>
+        </div>
+        <div class="score-item">
+            <div class="score-label">Combo</div>
+            <div class="score-value combo" id="combo">0</div>
+        </div>
+        <div class="score-item">
+            <div class="score-label">Multiplier</div>
+            <div class="score-value multiplier" id="multiplier">×1</div>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="lane-container">
+            <div class="lane" data-key="a">
+                <div class="hit-zone"></div>
+                <div class="lane-label">A</div>
+            </div>
+            <div class="lane" data-key="s">
+                <div class="hit-zone"></div>
+                <div class="lane-label">S</div>
+            </div>
+            <div class="lane" data-key="d">
+                <div class="hit-zone"></div>
+                <div class="lane-label">D</div>
+            </div>
+            <div class="lane" data-key="f">
+                <div class="hit-zone"></div>
+                <div class="lane-label">F</div>
+            </div>
+            <div class="lane" data-key="g">
+                <div class="hit-zone"></div>
+                <div class="lane-label">G</div>
+            </div>
+            <div class="lane" data-key="h">
+                <div class="hit-zone"></div>
+                <div class="lane-label">H</div>
+            </div>
+            <div class="lane" data-key="j">
+                <div class="hit-zone"></div>
+                <div class="lane-label">J</div>
+            </div>
+            <div class="lane" data-key="k">
+                <div class="hit-zone"></div>
+                <div class="lane-label">K</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-start" id="startBtn">▶ Start Game</button>
+        <button class="btn btn-back" onclick="window.location.href='index.html'">◀ Back to Beat Maker</button>
+    </div>
+
+    <div class="game-over" id="gameOver">
+        <h2>🎉 Song Complete! 🎉</h2>
+        <div class="final-score" id="finalScore">0</div>
+        <div class="stats">
+            <div>Perfect: <span id="perfectCount">0</span></div>
+            <div>Good: <span id="goodCount">0</span></div>
+            <div>Miss: <span id="missCount">0</span></div>
+            <div>Max Combo: <span id="maxCombo">0</span></div>
+        </div>
+        <button class="btn btn-start" onclick="location.reload()">🔄 Play Again</button>
+    </div>
+
+    <script>
+        // Initialize Audio Context
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext();
+
+        // Game state
+        let gameActive = false;
+        let score = 0;
+        let combo = 0;
+        let maxCombo = 0;
+        let multiplier = 1;
+        let perfectHits = 0;
+        let goodHits = 0;
+        let missedNotes = 0;
+        let activeNotes = new Map();
+
+        // Sound synthesis
+        const sounds = {
+            a: 261.63, // C4
+            s: 293.66, // D4
+            d: 329.63, // E4
+            f: 349.23, // F4
+            g: 392.00, // G4
+            h: 440.00, // A4
+            j: 493.88, // B4
+            k: 523.25  // C5
+        };
+
+        function playNote(key) {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.value = sounds[key];
+            
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.start(audioContext.currentTime);
+            osc.stop(audioContext.currentTime + 0.3);
+        }
+
+        // Song pattern - each note is [key, timing in ms]
+        const songPattern = [
+            ['a', 0], ['s', 500], ['d', 1000], ['f', 1500],
+            ['a', 2000], ['s', 2500], ['d', 3000], ['f', 3500],
+            ['g', 4000], ['h', 4500], ['j', 5000], ['k', 5500],
+            ['g', 6000], ['h', 6500], ['j', 7000], ['k', 7500],
+            ['a', 8000], ['d', 8500], ['g', 9000], ['k', 9500],
+            ['a', 10000], ['d', 10500], ['g', 11000], ['k', 11500],
+            ['s', 12000], ['f', 12500], ['h', 13000], ['k', 13500],
+            ['s', 14000], ['f', 14500], ['h', 15000], ['k', 15500],
+            ['a', 16000], ['s', 16250], ['d', 16500], ['f', 16750],
+            ['g', 17000], ['h', 17250], ['j', 17500], ['k', 17750],
+            ['k', 18000], ['j', 18250], ['h', 18500], ['g', 18750],
+            ['f', 19000], ['d', 19250], ['s', 19500], ['a', 19750],
+            ['a', 20000], ['a', 20500], ['k', 21000], ['k', 21500],
+            ['a', 22000], ['d', 22250], ['f', 22500], ['h', 22750],
+            ['k', 23000], ['h', 23250], ['f', 23500], ['d', 23750],
+            ['a', 24000], ['s', 24500], ['d', 25000], ['f', 25500],
+            ['g', 26000], ['h', 26500], ['j', 27000], ['k', 27500]
+        ];
+
+        const fallDuration = 2000; // 2 seconds to fall
+        const hitZoneHeight = 80;
+        const perfectThreshold = 40;
+        const goodThreshold = 80;
+
+        function createNote(key, lane) {
+            const note = document.createElement('div');
+            note.className = `note note-${key}`;
+            note.textContent = key.toUpperCase();
+            note.dataset.key = key;
+            lane.appendChild(note);
+            
+            // Set animation
+            note.style.animationDuration = `${fallDuration}ms`;
+            
+            // Store note
+            activeNotes.set(note, { key, hit: false });
+            
+            // Remove note after animation
+            setTimeout(() => {
+                if (!note.dataset.hit) {
+                    handleMiss();
+                }
+                note.remove();
+                activeNotes.delete(note);
+            }, fallDuration);
+            
+            return note;
+        }
+
+        function checkHit(key) {
+            const lane = document.querySelector(`.lane[data-key="${key}"]`);
+            const hitZone = lane.querySelector('.hit-zone');
+            const hitZoneRect = hitZone.getBoundingClientRect();
+            const hitZoneCenter = hitZoneRect.top + hitZoneRect.height / 2;
+            
+            let closestNote = null;
+            let closestDistance = Infinity;
+            
+            // Find the closest note in this lane
+            lane.querySelectorAll('.note').forEach(note => {
+                if (note.dataset.hit) return;
+                
+                const noteRect = note.getBoundingClientRect();
+                const noteCenter = noteRect.top + noteRect.height / 2;
+                const distance = Math.abs(noteCenter - hitZoneCenter);
+                
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestNote = note;
+                }
+            });
+            
+            if (closestNote && closestDistance < goodThreshold) {
+                closestNote.dataset.hit = 'true';
+                closestNote.style.opacity = '0';
+                
+                if (closestDistance < perfectThreshold) {
+                    handleHit('perfect');
+                } else {
+                    handleHit('good');
+                }
+                
+                playNote(key);
+                return true;
+            }
+            
+            return false;
+        }
+
+        function handleHit(type) {
+            combo++;
+            maxCombo = Math.max(maxCombo, combo);
+            
+            // Update multiplier based on combo
+            if (combo >= 20) multiplier = 4;
+            else if (combo >= 10) multiplier = 3;
+            else if (combo >= 5) multiplier = 2;
+            else multiplier = 1;
+            
+            if (type === 'perfect') {
+                score += 100 * multiplier;
+                perfectHits++;
+                showFeedback('PERFECT!', 'perfect');
+            } else if (type === 'good') {
+                score += 50 * multiplier;
+                goodHits++;
+                showFeedback('GOOD!', 'good');
+            }
+            
+            updateScore();
+        }
+
+        function handleMiss() {
+            combo = 0;
+            multiplier = 1;
+            missedNotes++;
+            showFeedback('MISS!', 'miss');
+            updateScore();
+        }
+
+        function showFeedback(text, type) {
+            const feedback = document.createElement('div');
+            feedback.className = `feedback ${type}`;
+            feedback.textContent = text;
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 500);
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('combo').textContent = combo;
+            document.getElementById('multiplier').textContent = `×${multiplier}`;
+        }
+
+        function startGame() {
+            if (gameActive) return;
+            
+            gameActive = true;
+            score = 0;
+            combo = 0;
+            maxCombo = 0;
+            multiplier = 1;
+            perfectHits = 0;
+            goodHits = 0;
+            missedNotes = 0;
+            updateScore();
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('startBtn').textContent = '♪ Playing...';
+            
+            // Spawn notes according to pattern
+            songPattern.forEach(([key, timing]) => {
+                setTimeout(() => {
+                    const lane = document.querySelector(`.lane[data-key="${key}"]`);
+                    createNote(key, lane);
+                }, timing);
+            });
+            
+            // End game after last note
+            const lastNoteTiming = songPattern[songPattern.length - 1][1];
+            setTimeout(() => {
+                endGame();
+            }, lastNoteTiming + fallDuration + 1000);
+        }
+
+        function endGame() {
+            gameActive = false;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('perfectCount').textContent = perfectHits;
+            document.getElementById('goodCount').textContent = goodHits;
+            document.getElementById('missCount').textContent = missedNotes;
+            document.getElementById('maxCombo').textContent = maxCombo;
+            document.getElementById('gameOver').style.display = 'block';
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive || e.repeat) return;
+            
+            const key = e.key.toLowerCase();
+            if (sounds[key]) {
+                checkHit(key);
+            }
+        });
+
+        // Start button
+        document.getElementById('startBtn').addEventListener('click', startGame);
+    </script>
+</body>
+</html>

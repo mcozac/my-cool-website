@@ -223,6 +223,32 @@
             font-weight: bold;
         }
 
+        .hero-button {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            font-family: 'Courier New', monospace;
+        }
+
+        .hero-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 0, 255, 0.8);
+        }
+
+        .hero-button:active {
+            transform: scale(0.95);
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -281,6 +307,10 @@
             <span>Click</span> the pads or use your <span>keyboard</span> to make beats!<br>
             Experiment with different combinations and rhythms 🎶
         </div>
+
+        <button class="hero-button" onclick="window.location.href='piano-hero.html'">
+            🎸 Play Piano Hero Mode
+        </button>
     </div>
 
     <script>
